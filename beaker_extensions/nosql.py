@@ -34,10 +34,12 @@ class NoSqlManager(NamespaceManager):
         url = parts[0]
         if len(parts) > 1:
             conn_params = dict(p.split('=', 1) for p in parts[1].split('&'))
-
-        host, port = url.split(':', 1)
-
-        self.open_connection(host, int(port), **conn_params)
+        
+        if "unix:" in url:
+            self.open_connection(url, 0, **conn_params)
+        else:
+            host, port = url.split(':', 1)
+            self.open_connection(host, int(port), **conn_params)
 
     def open_connection(self, host, port):
         self.db_conn = None
