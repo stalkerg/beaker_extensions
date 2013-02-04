@@ -19,7 +19,7 @@ class RedisManager(NoSqlManager):
 
     def open_connection(self, host, port, **params):
         if "unix:" in host:
-            self.db_conn = Redis(unix_socket_path=host.remove("unix:"), connection_pool=self.connection_pool, **params)
+            self.db_conn = Redis(unix_socket_path=host.replace("unix:",''), connection_pool=self.connection_pool, **params)
         else:
             self.db_conn = Redis(host=host, port=int(port), connection_pool=self.connection_pool, **params)
 
